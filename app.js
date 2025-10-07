@@ -95,6 +95,11 @@ form.addEventListener('submit', async (e) => {
 
 // Event Listener para descargar el boleto en PDF de alta calidad
 downloadBtn.addEventListener('click', () => {
+  // --- INICIA LÍNEA CORREGIDA ---
+  // Extraemos la herramienta jsPDF de la "caja" principal jspdf que está en la ventana del navegador.
+  const { jsPDF } = window.jspdf;
+  // --- TERMINA LÍNEA CORREGIDA ---
+
   const nombre = ticketNombre.textContent.trim();
   const numeroCompleto = ticketNumero.textContent.trim();
 
@@ -103,7 +108,7 @@ downloadBtn.addEventListener('click', () => {
     return;
   }
 
-  // Crea una nueva instancia de jsPDF en orientación vertical (portrait), milímetros y tamaño A4
+  // Ahora la siguiente línea funcionará sin problemas
   const doc = new jsPDF('p', 'mm', 'a4');
 
   // --- DIBUJAMOS EL FONDO Y DISEÑO DEL BOLETO ---
@@ -125,7 +130,6 @@ downloadBtn.addEventListener('click', () => {
   doc.rect(posX, posY, ticketWidth, 25, 'F');
 
   // --- AÑADIMOS EL LOGO ---
-  // Tomamos el logo del HTML. Asegúrate de que tu logo en el modal tenga el id "modal-logo"
   const logoImg = document.getElementById('modal-logo');
   if (logoImg) {
     doc.addImage(logoImg, 'JPEG', posX + 5, posY + 5, 35, 15);
