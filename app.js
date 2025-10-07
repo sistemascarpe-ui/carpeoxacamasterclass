@@ -14,12 +14,10 @@ const ticketNombre = document.getElementById('ticket-nombre');
 const ticketNumero = document.getElementById('ticket-numero');
 const downloadBtn = document.getElementById('download-ticket');
 
-// --- INICIA CÓDIGO NUEVO ---
 // Selectores del modal de ERROR
 const modalError = document.getElementById('error-modal');
 const closeBtnError = document.getElementById('error-close');
 const errorMessage = document.getElementById('error-message');
-// --- TERMINA CÓDIGO NUEVO ---
 
 // Funciones para el modal de ÉXITO
 function openTicketModal() {
@@ -32,7 +30,6 @@ function closeTicketModal() {
   modalTicket.setAttribute('aria-hidden', 'true');
 }
 
-// --- INICIA CÓDIGO NUEVO ---
 // Funciones para el modal de ERROR
 function openErrorModal(message) {
   errorMessage.textContent = message;
@@ -44,7 +41,6 @@ function closeErrorModal() {
   modalError.hidden = true;
   modalError.setAttribute('aria-hidden', 'true');
 }
-// --- TERMINA CÓDIGO NUEVO ---
 
 // Event Listeners
 closeBtnTicket.addEventListener('click', closeTicketModal);
@@ -52,13 +48,10 @@ modalTicket.addEventListener('click', (e) => {
   if (e.target === modalTicket) { closeTicketModal(); }
 });
 
-// --- INICIA CÓDIGO NUEVO ---
 closeBtnError.addEventListener('click', closeErrorModal);
 modalError.addEventListener('click', (e) => {
   if (e.target === modalError) { closeErrorModal(); }
 });
-// --- TERMINA CÓDIGO NUEVO ---
-
 
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
@@ -79,7 +72,6 @@ form.addEventListener('submit', async (e) => {
 
     if (error) {
       if (error.code === '23505') {
-        // --- LÍNEA MODIFICADA ---
         openErrorModal('Este correo electrónico ya ha sido registrado. Por favor, utiliza otro.');
       } else {
         console.error('Error de Supabase:', error);
@@ -101,34 +93,86 @@ form.addEventListener('submit', async (e) => {
   }
 });
 
-// Código para descargar PDF (sin cambios)
-downloadBtn.addEventListener('click', async () => {
-  // ... (este bloque de código no necesita cambios)
+// Event Listener para descargar el boleto en PDF de alta calidad
+downloadBtn.addEventListener('click', () => {
   const nombre = ticketNombre.textContent.trim();
-  const numero = ticketNumero.textContent.trim();
-  if (!nombre || !numero) {
+  const numeroCompleto = ticketNumero.textContent.trim();
+
+  if (!nombre || !numeroCompleto) {
     alert('Primero genera tu boleto enviando el formulario.');
     return;
   }
-  const pdfNombre = document.getElementById('pdf-nombre');
-  const pdfNumero = document.getElementById('pdf-numero');
-  pdfNombre.textContent = nombre;
-  pdfNumero.textContent = numero;
-  const ticketPdfEl = document.getElementById('ticket-pdf');
-  ticketPdfEl.hidden = false;
-  ticketPdfEl.style.position = 'fixed';
-  ticketPdfEl.style.left = '-10000px';
-  const canvas = await html2canvas(ticketPdfEl, { scale: 2, backgroundColor: '#ffffff' });
-  const imgData = canvas.toDataURL('image/png');
-  const { jsPDF } = window.jspdf;
+
+  // Crea una nueva instancia de jsPDF en orientación vertical (portrait), milímetros y tamaño A4
   const doc = new jsPDF('p', 'mm', 'a4');
-  const pdfWidth = doc.internal.pageSize.getWidth();
-  const imgProps = doc.getImageProperties(imgData);
-  const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-  const marginTop = 20;
-  doc.addImage(imgData, 'PNG', 0, marginTop, pdfWidth, pdfHeight, undefined, 'FAST');
-  doc.setProperties({ title: `Boleto-${numero}` });
-  doc.save(`boleto-${numero}.pdf`);
-  ticketPdfEl.hidden = true;
-  ticketPdfEl.style.position = 'static';
+
+  // --- DIBUJAMOS EL FONDO Y DISEÑO DEL BOLETO ---
+  const ticketWidth = 180;
+  const ticketHeight = 80;
+  const posX = (doc.internal.pageSize.getWidth() - ticketWidth) / 2; // Centrar el boleto
+  const posY = 30;
+
+  // Sombra suave
+  doc.setFillColor(200, 200, 200);
+  doc.roundedRect(posX + 1, posY + 1, ticketWidth, ticketHeight, 5, 5, 'F');
+
+  // Fondo principal del boleto
+  doc.setFillColor(255, 255, 255);
+  doc.roundedRect(posX, posY, ticketWidth, ticketHeight, 5, 5, 'F');
+
+  // Cabecera azul
+  doc.setFillColor(28, 78, 216); // Un azul similar al de tu botón
+  doc.rect(posX, posY, ticketWidth, 25, 'F');
+
+  // --- AÑADIMOS EL LOGO ---
+  // Tomamos el logo del HTML. Asegúrate de que tu logo en el modal tenga el id "modal-logo"
+  const logoImg = document.getElementById('modal-logo');
+  if (logoImg) {
+    doc.addImage(logoImg, 'JPEG', posX + 5, posY + 5, 35, 15);
+  }
+
+  // --- AÑADIMOS EL TEXTO ---
+  doc.setFont('Helvetica', 'bold');
+  doc.setFontSize(16);
+  doc.setTextColor(255, 255, 255);
+  doc.text('EVENTO OAXACA', posX + ticketWidth - 5, posY + 15, { align: 'right' });
+
+  doc.setFont('Helvetica', 'normal');
+  doc.setFontSize(11);
+  doc.setTextColor(100, 100, 100);
+  doc.text('Nombre del Asistente:', posX + 15, posY + 40);
+
+  doc.setFontSize(16);
+  doc.setTextColor(0, 0, 0);
+  doc.text(nombre, posX + 15, posY + 48);
+  
+  doc.setFontSize(11);
+  doc.setTextColor(100, 100, 100);
+  doc.text('Número de Boleto:', posX + 15, posY + 60);
+
+  doc.setFontSize(20);
+  doc.setTextColor(28, 78, 216);
+  doc.setFont('Helvetica', 'bold');
+  doc.text(numeroCompleto, posX + 15, posY + 69);
+
+  // --- LÍNEA PUNTEADA DE CORTE ---
+  doc.setLineDashPattern([2, 2], 0);
+  doc.setLineWidth(0.5);
+  doc.setDrawColor(180, 180, 180);
+  doc.line(posX + 115, posY + 30, posX + 115, posY + ticketHeight - 5);
+
+  // --- GENERAMOS Y AÑADIMOS EL CÓDIGO QR ---
+  try {
+    const qrText = `Boleto: ${numeroCompleto}\nNombre: ${nombre}\nEvento: Oaxaca`;
+    const qr = qrcode(0, 'L');
+    qr.addData(qrText);
+    qr.make();
+    const qrImg = qr.createDataURL(4);
+    doc.addImage(qrImg, 'PNG', posX + 125, posY + 35, 45, 45);
+  } catch(e) {
+    console.error("No se pudo generar el código QR", e);
+  }
+
+  // --- GUARDAMOS EL ARCHIVO ---
+  doc.save(`boleto-${numeroCompleto}.pdf`);
 });
