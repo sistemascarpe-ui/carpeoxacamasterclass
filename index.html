@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Registro de inscripción al evento | Landing Oaxaca</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+<body>
+  <main class="page">
+    <div class="container">
+      <div class="grid">
+        <form class="form" action="#" method="post" novalidate>
+          <h1>Registro de inscripción al evento</h1>
+
+          <div class="field">
+            <label for="nombre">Nombre completo</label>
+            <input id="nombre" name="nombre" type="text" placeholder="Tu nombre" required autocomplete="name">
+          </div>
+
+          <div class="field">
+            <label for="email">Correo electrónico</label>
+            <input id="email" name="email" type="email" placeholder="tu@email.com" required autocomplete="email">
+          </div>
+
+          <div class="field">
+            <label for="telefono">Número de teléfono</label>
+            <input id="telefono" name="telefono" type="tel" placeholder="Ej. 555-123-4567" required autocomplete="tel" inputmode="tel">
+          </div>
+
+          <div class="field">
+            <label for="curso">Curso o certificación de su interés</label>
+            <input id="curso" name="curso" type="text" placeholder="Nombre del curso o certificación" required autocomplete="off">
+          </div>
+
+          <button type="submit" class="btn">Enviar registro</button>
+        </form>
+
+        <section class="info">
+          <h2>Registro de inscripción</h2>
+          <p>Prepárate para vivir una mañana llena de aprendizaje, sorpresas y experiencias únicas. Conocerás todo lo que Carpe Diem México tiene para ti y disfrutarás de la impartición del taller de lentes progresivos.</p>
+          <p>🕗 Horario: 8:00 a 11:00 AM</p>
+          <p>🎁 ¡Grandes sorpresas te esperan!</p>
+          <p>🎫 No olvides descargar tu boleto para participar en la rifa</p>
+          <p>¡No podemos esperar para verte allí y compartir esta experiencia contigo!</p>
+        </section>
+      </div>
+
+      <div id="ticket-modal" class="modal" hidden aria-hidden="true" role="dialog" aria-modal="true">
+        <div class="modal-dialog">
+          <button class="modal-close" id="ticket-close" aria-label="Cerrar">×</button>
+          <section id="ticket" class="ticket" aria-live="polite">
+            <div class="ticket-header">
+              <img id="modal-logo" src="img/logo.jpeg" alt="Evento Oaxaca" class="ticket-logo">
+            </div>
+            <div class="ticket-body">
+              <div class="ticket-row">
+                <span class="label">Nombre:</span>
+                <span id="ticket-nombre"></span>
+              </div>
+              <div class="ticket-row">
+                <span class="label">Número de boleto:</span>
+                <span id="ticket-numero" class="ticket-number"></span>
+              </div>
+              <div class="ticket-row">
+                <span class="label">Horario:</span>
+                <span>8:00 a 11:00 AM</span>
+              </div>
+            </div>
+            <div class="ticket-actions">
+              <button id="download-ticket" class="btn">Descargar boleto (PDF)</button>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <div id="error-modal" class="modal" hidden aria-hidden="true" role="dialog" aria-modal="true">
+        <div class="modal-dialog">
+          <button class="modal-close" id="error-close" aria-label="Cerrar">×</button>
+          <section id="error-content" class="ticket" aria-live="polite">
+            <div class="ticket-header">
+              <h3 class="ticket-title">Aviso de Registro</h3>
+            </div>
+            <div class="ticket-body">
+              <p id="error-message" style="text-align: center; font-size: 16px; padding: 10px 0;"></p>
+            </div>
+          </section>
+        </div>
+      </div>
+
+       <div id="ticket-pdf" class="ticket-pdf" hidden>
+         <div class="ticket-pdf-header">
+           <div class="brand">
+             <img src="img/logo2.jpeg" alt="Evento Oaxaca" class="brand-logo">
+             <span class="brand-name">Evento Oaxaca</span>
+           </div>
+           <div class="serial">#<span id="pdf-numero"></span></div>
+         </div>
+         <div class="ticket-pdf-body">
+           <div class="details">
+             <div class="line">
+               <span class="label">Nombre:</span>
+               <span id="pdf-nombre"></span>
+             </div>
+             <div class="line">
+               <span class="label">Horario:</span>
+               <span>8:00 a 11:00 AM</span>
+             </div>
+           </div>
+         </div>
+         <div class="ticket-pdf-footer">Gracias por participar</div>
+       </div>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="app.js" defer></script>
+
+</body>
+</html>

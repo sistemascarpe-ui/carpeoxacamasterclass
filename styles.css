@@ -1,0 +1,254 @@
+/* styles.css - Landing Oaxaca */.grid{ display: grid; grid-template-columns: 1fr; gap: 16px; }/* Modal styles */
+.modal{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  z-index: 50;
+}
+.modal[hidden]{ display: none; }
+.modal-dialog{
+  position: relative;
+  width: min(680px, 100%);
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+  padding: 16px;
+  animation: pop .2s ease;
+}
+.modal-close{
+  position: absolute;
+  top: 8px; right: 10px;
+  border: none;
+  background: transparent;
+  font-size: 22px;
+  cursor: pointer;
+}
+@keyframes pop{ from{ transform: scale(.98); opacity: .6; } to{ transform: scale(1); opacity: 1; } }
+@media (min-width: 900px){ .grid{ grid-template-columns: 1.2fr 0.8fr; } }
+:root{
+  --bg-overlay: rgba(0,0,0,0.45);
+  --card-bg: rgba(255,255,255,0.9);
+  --text: #1a1a1a;
+  --muted: #6b7280;
+  --primary: #2563eb;
+  --primary-700: #1d4ed8;
+  --ring: rgba(37,99,235,0.35);
+}
+
+*{ box-sizing: border-box; }
+html, body{ height: 100%; }
+body{
+  margin: 0;
+  font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+  color: var(--text);
+}
+
+.page{
+  min-height: 100vh;
+  /* Background image */
+  background: linear-gradient(var(--bg-overlay), var(--bg-overlay)), url('img/fondo.png') center/cover no-repeat fixed;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.container{
+  width: 100%;
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+@media (min-width: 900px){
+  .container{
+    grid-template-columns: 1.2fr 0.8fr;
+    align-items: start;
+    grid-auto-rows: min-content;
+    gap: 20px;
+  }
+  .ticket{
+    grid-column: 1 / -1; /* el boleto debajo ocupando todo el ancho */
+  }
+}
+
+.info{
+  background: var(--card-bg);
+  backdrop-filter: saturate(140%) blur(6px);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+}
+
+.info h2{
+  margin: 0 0 12px;
+  font-weight: 700;
+  font-size: clamp(20px, 3vw, 24px);
+}
+
+.info p{
+  margin: 8px 0;
+  color: var(--text);
+}
+
+.form{
+  background: var(--card-bg);
+  backdrop-filter: saturate(140%) blur(6px);
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+}
+
+.form h1{
+  margin: 0 0 18px;
+  font-weight: 700;
+  font-size: clamp(22px, 3vw, 28px);
+}
+
+.field{ margin-bottom: 16px; }
+.label{ font-weight: 600; }
+
+.field label{
+  display: block;
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+.field input{
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  background: #fff;
+  font-size: 16px;
+  outline: none;
+  transition: box-shadow .2s ease, border-color .2s ease, transform .02s ease;
+}
+
+.field input:focus{
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--ring);
+}
+
+.field input::placeholder{ color: #9ca3af; }
+
+.btn{
+  display: inline-block;
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: none;
+  background: var(--primary);
+  color: #fff;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background .2s ease, transform .02s ease;
+}
+
+.btn:hover{ background: var(--primary-700); }
+.btn:active{ transform: translateY(1px); }
+
+/* Responsive tweaks */
+@media (min-width: 768px){
+  .form{ padding: 32px; }
+}
+
+/* Ticket styles */
+.ticket{
+  margin-top: 16px;
+  background: #fff;
+  border: 1px dashed #cbd5e1;
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.ticket-header{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.ticket-title{
+  font-weight: 700;
+}
+
+.ticket-body{
+  display: grid;
+  gap: 8px;
+}
+
+.ticket-row{
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.ticket-number{
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.ticket-actions{
+  margin-top: 12px;
+}
+
+/* PDF ticket styles */
+.ticket-pdf{
+  width: 700px;
+  min-height: 400px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  border: 1px solid #e5e7eb;
+  padding: 24px;
+}
+.ticket-pdf-header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px dashed #e5e7eb;
+  padding-bottom: 12px;
+  margin-bottom: 12px;
+}
+.ticket-pdf-header .brand{
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+.brand-logo{
+  height: 36px;
+  width: auto;
+  border-radius: 6px;
+}
+.brand-name{
+  font-weight: 800;
+  font-size: 24px;
+}
+.ticket-pdf-body{
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+.ticket-pdf-body .details{
+  display: grid;
+  gap: 8px;
+}
+.ticket-pdf-body .line{
+  font-size: 18px;
+}
+.ticket-pdf-footer{
+  margin-top: 16px;
+  text-align: center;
+  color: var(--muted);
+}
+.qr{
+  width: 140px; height: 140px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+}
