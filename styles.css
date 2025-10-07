@@ -1,33 +1,4 @@
-/* styles.css - Landing Oaxaca */.grid{ display: grid; grid-template-columns: 1fr; gap: 16px; }/* Modal styles */
-.modal{
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.55);
-  display: grid;
-  place-items: center;
-  padding: 24px;
-  z-index: 50;
-}
-.modal[hidden]{ display: none; }
-.modal-dialog{
-  position: relative;
-  width: min(680px, 100%);
-  background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-  padding: 16px;
-  animation: pop .2s ease;
-}
-.modal-close{
-  position: absolute;
-  top: 8px; right: 10px;
-  border: none;
-  background: transparent;
-  font-size: 22px;
-  cursor: pointer;
-}
-@keyframes pop{ from{ transform: scale(.98); opacity: .6; } to{ transform: scale(1); opacity: 1; } }
-@media (min-width: 900px){ .grid{ grid-template-columns: 1.2fr 0.8fr; } }
+/* styles.css - Landing Oaxaca */
 :root{
   --bg-overlay: rgba(0,0,0,0.45);
   --card-bg: rgba(255,255,255,0.9);
@@ -48,7 +19,6 @@ body{
 
 .page{
   min-height: 100vh;
-  /* Background image */
   background: linear-gradient(var(--bg-overlay), var(--bg-overlay)), url('img/fondo.png') center/cover no-repeat fixed;
   display: grid;
   place-items: center;
@@ -63,16 +33,14 @@ body{
   gap: 16px;
 }
 
+.grid{
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
 @media (min-width: 900px){
-  .container{
-    grid-template-columns: 1.2fr 0.8fr;
-    align-items: start;
-    grid-auto-rows: min-content;
-    gap: 20px;
-  }
-  .ticket{
-    grid-column: 1 / -1; /* el boleto debajo ocupando todo el ancho */
-  }
+  .grid{ grid-template-columns: 1.2fr 0.8fr; }
 }
 
 .info{
@@ -109,7 +77,6 @@ body{
 }
 
 .field{ margin-bottom: 16px; }
-.label{ font-weight: 600; }
 
 .field label{
   display: block;
@@ -153,102 +120,113 @@ body{
 .btn:hover{ background: var(--primary-700); }
 .btn:active{ transform: translateY(1px); }
 
-/* Responsive tweaks */
-@media (min-width: 768px){
-  .form{ padding: 32px; }
+/* --- Modal styles --- */
+.modal{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  z-index: 50;
 }
-
-/* Ticket styles */
-.ticket{
-  margin-top: 16px;
+.modal[hidden]{ display: none; }
+.modal-dialog{
+  position: relative;
+  width: min(680px, 100%);
   background: #fff;
-  border: 1px dashed #cbd5e1;
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+  padding: 24px;
+  animation: pop .2s ease;
+}
+.modal-close{
+  position: absolute;
+  top: 8px; right: 10px;
+  border: none;
+  background: transparent;
+  font-size: 22px;
+  cursor: pointer;
+}
+@keyframes pop{ from{ transform: scale(.98); opacity: .6; } to{ transform: scale(1); opacity: 1; } }
+
+/* --- Ticket styles --- */
+.ticket{
+  background: #fff;
   border-radius: 12px;
   padding: 16px;
 }
-
 .ticket-header{
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 16px;
+  text-align: center;
 }
-
 .ticket-title{
   font-weight: 700;
 }
-
 .ticket-body{
   display: grid;
-  gap: 8px;
+  gap: 12px;
 }
-
 .ticket-row{
   display: flex;
   align-items: baseline;
   gap: 8px;
 }
-
+.label{
+  font-weight: 600;
+}
 .ticket-number{
   font-weight: 700;
   font-size: 18px;
 }
-
 .ticket-actions{
-  margin-top: 12px;
+  margin-top: 24px;
 }
 
-/* PDF ticket styles */
-.ticket-pdf{
-  width: 700px;
-  min-height: 400px;
-  background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
-  border: 1px solid #e5e7eb;
-  padding: 24px;
+/* --- ESTILOS PARA EL TICKET EN PDF --- */
+.ticket-pdf {
+    /* ... Tus estilos de PDF aquí ... */
 }
-.ticket-pdf-header{
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 2px dashed #e5e7eb;
-  padding-bottom: 12px;
-  margin-bottom: 12px;
-}
-.ticket-pdf-header .brand{
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-}
-.brand-logo{
-  height: 36px;
-  width: auto;
-  border-radius: 6px;
-}
-.brand-name{
-  font-weight: 800;
-  font-size: 24px;
-}
-.ticket-pdf-body{
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-}
-.ticket-pdf-body .details{
-  display: grid;
-  gap: 8px;
-}
-.ticket-pdf-body .line{
-  font-size: 18px;
-}
-.ticket-pdf-footer{
-  margin-top: 16px;
-  text-align: center;
-  color: var(--muted);
-}
-.qr{
-  width: 140px; height: 140px;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
+
+/* ============================================= */
+/* --- INICIA EL CÓDIGO DE CORRECCIÓN PARA MÓVILES --- */
+/* ============================================= */
+@media (max-width: 600px) {
+  /* Hacemos el modal un poco menos ancho en pantallas pequeñas */
+  .modal-dialog {
+    width: 100%;
+    padding: 20px 16px;
+  }
+  
+  /* Hacemos el logo del ticket flexible para que se encoja */
+  #modal-logo {
+    max-width: 200px; /* Un tamaño máximo más pequeño para móviles */
+    width: 100%;
+    height: auto;
+  }
+
+  /* Ajustamos el cuerpo del ticket para mejor lectura */
+  .ticket-body {
+    font-size: 16px;
+    gap: 16px; /* Aumentamos el espacio entre filas */
+  }
+
+  /*
+    Forzamos a que el texto ("Nombre:") y el valor ("Prueba3")
+    se separen en dos columnas para que no se amontonen.
+  */
+  .ticket-row {
+    flex-direction: column; /* Apila los elementos verticalmente */
+    align-items: flex-start; /* Alinea todo a la izquierda */
+    gap: 2px; /* Reduce el espacio entre label y valor */
+  }
+
+  /* Hacemos que el label (ej. "Nombre:") se vea más pequeño */
+  .ticket-row .label {
+    font-size: 13px;
+    color: var(--muted);
+  }
 }
